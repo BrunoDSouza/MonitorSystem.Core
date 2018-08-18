@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace MonitorSystem.Core.Model
 {
-    public class ComputerDetails
+    public class Computer
     {
 
         #region Public Members
@@ -23,7 +19,7 @@ namespace MonitorSystem.Core.Model
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public ComputerDetails() { }
+        public Computer() { }
 
         /// <summary>
         /// Full constructor
@@ -32,7 +28,7 @@ namespace MonitorSystem.Core.Model
         /// <param name="ipv4"></param>
         /// <param name="userName"></param>
         /// <param name="processes"></param>
-        public ComputerDetails(string nameComputer, string ipv4, string userName, object processes)
+        public Computer(string nameComputer, string ipv4, string userName, object processes)
         {
             NameComputer = nameComputer;
             Ipv4 = ipv4;
@@ -46,7 +42,7 @@ namespace MonitorSystem.Core.Model
 
         public override bool Equals(object obj)
         {
-            var details = obj as ComputerDetails;
+            var details = obj as Computer;
             return details != null &&
                    NameComputer == details.NameComputer &&
                    Ipv4 == details.Ipv4 &&
