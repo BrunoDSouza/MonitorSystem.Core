@@ -3,8 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Net;
+using System.Net.Sockets;
 
 namespace MonitorSystem.Core.Utils
 {
@@ -12,17 +12,21 @@ namespace MonitorSystem.Core.Utils
     {
         public static string GetIPV4()
         {
-            return "";
+            var ipv4Addresses = Array.FindLast(
+                Dns.GetHostEntry(string.Empty)
+                .AddressList, a => a.AddressFamily == AddressFamily.InterNetwork);
+
+            return ipv4Addresses.ToString();
         }
 
         public static string GetUserName()
         {
-            return "";
+            return Environment.UserName;
         }
 
         public static string GetNameComputer()
         {
-            return "";
+            return Environment.MachineName;
         }
 
         public static List<ProcessRunning> GetProcesses(Process[] array)
@@ -33,13 +37,18 @@ namespace MonitorSystem.Core.Utils
                     Id = process.Id,
                     Name = process.ProcessName
                 };
-                process.Modules.Cast<ProcessModule>().ToList()
-                    .ForEach(module => {
-                        item.Description = module.FileVersionInfo.FileDescription;
-                        item.Path = module.FileName;
-                        item.Version = module.FileVersionInfo.FileVersion;
-                        item.MemoryAllocation = module.ModuleMemorySize.ToString();
-                    });
+
+                try
+                {
+                    item.Description = process.MainModule.FileVersionInfo.FileDescription;
+                    item.Path = process.MainModule.FileName;
+                    item.Version = process.MainModule.FileVersionInfo.FileVersion;
+                    item.MemoryAllocation = process.MainModule.ModuleMemorySize.ToString();
+                }
+                catch
+                {
+                    item.Description = item.Path = item.Version = item.MemoryAllocation = "Access denied";
+                }
 
                 newList.Add(item);
                 return newList;
