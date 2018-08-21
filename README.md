@@ -13,9 +13,8 @@ Packages will be restored automatically by nuget, but case you want mannually ru
 Packages-Install --reinstall
 
 # serve with hot reload at localhost:8080
-run debug
+run debug (F5)
 
 # build for production
-npm release
+run release (F5)
 ```
-
